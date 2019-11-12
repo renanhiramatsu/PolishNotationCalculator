@@ -8,27 +8,37 @@
 using namespace std;
 
 
-int main(){
-
+int main() {
+	char input;
 	Calculator ob;
 	string userInput;
-	while (userInput != "q")
+	bool cont = true;
+	string postfix, prefix;
+	do
 	{
-	cout << "Enter a mathematical expression: ";
-	getline(cin, userInput);
+		cout << "Enter a mathematical expression: ";
+		getline(cin, userInput);
 
-	cout << "Infix to postfix: " << endl;
-	cout << ob.inFixToPostfix(userInput) << endl;
+		cout << "Infix to postfix: " << endl;
+		postfix = ob.inFixToPostfix(userInput);
+		cout << postfix << endl;
+		cout << "Result: "<< ob.evalPostFix(postfix) << endl;
+
+		cout << "Infix to prefix: " << endl;
+		cout << ob.inFixToPrefix(userInput) << endl;
+		
+
+		cout << "press 'q' to quit and 'c' to continue: ";
+		cin >> input;
+		cin.ignore();
+
+		if (tolower(input) == 'q')
+			cont = false;
+
+	} while (cont != false);
 
 
-	cout << "Infix to prefix: " << endl;
-	cout << ob.inFixToPrefix(userInput) << endl;
 
-
-	}
-
-	
-	
 	system("pause");
 
 }
