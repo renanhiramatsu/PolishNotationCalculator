@@ -75,7 +75,8 @@ void StackADT <T>::pop()
 {
 	if (isEmpty()) {
 		ob.removeData(top);
-		top = ob.getNext();
+		if (ob.dataCount() >= 1)
+			top = ob.getHead();
 	}
 	else {
 		std::cout << "Stack is empty!" << std::endl;

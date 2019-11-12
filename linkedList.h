@@ -12,65 +12,66 @@ private:
 
 public:
 	linkedList();
-	void createList(std::string);			//creates a new linkedList
-	void addData(T, linkedList<T>);			//adds a node onto the linkedList
-	void removeData(T);						//removed a node from linkedList
-	bool findData(T);						//searches for a specific node from linkedList (i think its bool??)
-	int dataCount();						//counts the amount of nodes in linkedlist
-	void emptyList();						//empties the entire linkedlist
-	void displayData();						//displays all nodes 
-	bool operator != (T);
-	int getNext();
+	T getHead();
+	void createList(std::string);            //creates a new linkedList
+	void addData(T, linkedList<T>);            //adds a node onto the linkedList
+	void removeData(T);                        //removed a node from linkedList
+	bool findData(T);                        //searches for a specific node from linkedList (i think its bool??)
+	int dataCount();                        //counts the amount of nodes in linkedlist
+	void emptyList();                        //empties the entire linkedlist
+	void displayData();                        //displays all nodes
 
 };
-
-
 template <typename T>
-int linkedList<T>::getNext() {
-	int nxt = head->data;
-	return nxt;
+T linkedList<T>::getHead() {
+
+	linkNode<T> *tempHead = head;
+
+	while (tempHead->getNext() != nullptr)
+	{
+		tempHead = tempHead->getNext();
+	}
+
+	return tempHead->getData();
 }
 
 //default constructor
 template <typename T>
-linkedList<T>::linkedList() : head(nullptr), tail(nullptr), count(0), sortType("") {};
+linkedList<T>::linkedList() : head(nullptr), count(0), sortType("") {};
 
 
 //*******************************************************************
-//						createList
+//                        createList
 // receives nothing
 // similar to default constructor. Creates a new list with one node
 // initialized to null and count to 0
-//	returns nothing
+//    returns nothing
 //********************************************************************
 template <typename T>
 void linkedList<T>::createList(std::string type) {
 	head = nullptr;
-	tail = head;
 	count = 0;
 	sortType = type;
-	std::cout << "list created!" << std::endl;
 }
 
 
 //*******************************************************************
-//						addData
+//                        addData
 // recieves a type T data
 // adds the data into the linkedlist
-// returns nothing 
+// returns nothing
 //********************************************************************
 template <typename T>
 void linkedList<T>::addData(T d, linkedList<T> obj) {
 	linkNode<T>* newNode = new linkNode<T>;
-	newNode->data = d;
-	newNode->next = nullptr;
+	newNode->setData(d);
+	newNode->setNext(nullptr);
 
 	// if the list is empty, set it as the head
 	if (head == nullptr)
 	{
 		head = newNode;
-		tail = head;
-		head->next = nullptr;
+		head->setNext(nullptr);
 		count++;
 	}
 
@@ -83,40 +84,40 @@ void linkedList<T>::addData(T d, linkedList<T> obj) {
 		//specific for unsorted linkedlists
 		if (obj.sortType == "none")
 		{
-			while (temp->next != nullptr)
+			while (temp->getNext() != nullptr)
 			{
-				temp = temp->next;				//just add node last
+				temp = temp->getNext();                //just add node last
 			}
-			temp->next = newNode;
-			count++;				//increase count
+			temp->setNext(newNode);
+			count++;                //increase count
 		}
 
 		//specific for increasing sorted linkedlist
 		if (obj.sortType == "increase")
 		{
 			//if first node is larger than the node being added, prepend
-			if (head->data > newNode->data)
+			if (head->getData() > newNode->getData())
 			{
-				newNode->next = temp;
+				newNode->setNext(temp);
 				head = newNode;
 				count++;
 				return;
 			}
 			//else, loop till at appropiate node
-			while (temp->next != nullptr && temp->data < newNode->data)
+			while (temp->getNext() != nullptr && temp->getData() < newNode->getData())
 			{
 				preNode = temp;
-				temp = temp->next;
+				temp = temp->getNext();
 			}
-			if (temp->data > newNode->data)
+			if (temp->getData() > newNode->getData())
 			{
-				preNode->next = newNode;
-				newNode->next = temp;
+				preNode->setNext(newNode);
+				newNode->setNext(temp);
 				count++;
 			}
 			else
 			{
-				temp->next = newNode;
+				temp->setNext(newNode);
 				count++;
 			}
 		}
@@ -126,46 +127,38 @@ void linkedList<T>::addData(T d, linkedList<T> obj) {
 		{
 
 			//if the first node is smaller than new node, prepend
-			if (head->data < newNode->data)
+			if (head->getData() < newNode->getData())
 			{
-				newNode->next = temp;
+				newNode->setNext(temp);
 				head = newNode;
 				count++;
 				return;
 			}
 
 			//else, loop till appropiate node
-			while (temp->next != nullptr && temp->data > newNode->data)
+			while (temp->getNext() != nullptr && temp->getData() > newNode->getData())
 			{
 				preNode = temp;
-				temp = temp->next;
+				temp = temp->getNext();
 			}
-			if (temp->data < newNode->data)
+			if (temp->getData() < newNode->getData())
 			{
-				preNode->next = newNode;
-				newNode->next = temp;
+				preNode->setNext(newNode);
+				newNode->setNext(temp);
 				count++;
 			}
 			else
 			{
-				temp->next = newNode;
+				temp->setNext(newNode);
 				count++;
 			}
 		}
 	}
 }
 
-template <typename T>
-bool linkedList<T>::operator != (T d) {
-	if (this->removeData(d) != removeData(d))
-		return true;
-	else
-		return false;
-};
-
 
 //*******************************************************************
-//							removeData
+//                            removeData
 // receives a type T data
 // finds the data that user specifies and removes the node
 // returns nothing
@@ -183,12 +176,12 @@ void linkedList<T>::removeData(T d) {
 	}
 
 	// if data desired to remove is first then this executes
-	if (iter->data == d)
+	if (iter->getData() == d)
 	{
-		iter = head->next;
+		std::cout << head->getData() << "Removed! " << std::endl;
+		iter = head->getNext();
 		delete head;
 		head = iter;
-		std::cout << "Removed! " << std::endl;
 		count--;
 		return;
 	}
@@ -196,22 +189,22 @@ void linkedList<T>::removeData(T d) {
 	//else loop until data is equal to desired removal data
 	else
 	{
-		while (iter->data != d && iter->next != nullptr)
+		while (iter->getData() != d && iter->getNext() != nullptr)
 		{
 			preNode = iter;
-			iter = iter->next;
+			iter = iter->getNext();
 		}
 
 		//if loops successfully, remove
-		if (iter->data == d)
+		if (iter->getData() == d)
 		{
-			preNode->next = iter->next;
+			preNode->setNext(iter->getNext());
 			delete iter;
 			count--;
-			std::cout << d << " has been removed. " << std::endl;
+			//std::cout << d << " has been removed. " << std::endl;
 		}
 
-		// else its not in the list 
+		// else its not in the list
 		else
 		{
 			std::cout << "The element you wanted to delete is not part of the list" << std::endl;
@@ -221,7 +214,7 @@ void linkedList<T>::removeData(T d) {
 
 
 //*******************************************************************
-//							findData
+//                            findData
 // recieves a type T data
 // the function tries to find the desired data in the linkedlist
 //
@@ -230,21 +223,21 @@ template <typename T>
 bool linkedList<T>::findData(T d) {
 	linkNode<T>* iter = head;
 	bool found = false;
-	//if first element is the one you're searching for 
-	if (head->data == d)
+	//if first element is the one you're searching for
+	if (head->getData() == d)
 	{
 		found = true;
 	}
 
-	//loop through until you find the element 
-	while (iter->next != nullptr)
+	//loop through until you find the element
+	while (iter->getNext() != nullptr)
 	{
-		if (iter->data == d)
+		if (iter->getData() == d)
 		{
 			found = true;
 
 		}
-		iter = iter->next;
+		iter = iter->getNext();
 	}
 
 	return found;
@@ -252,7 +245,7 @@ bool linkedList<T>::findData(T d) {
 
 
 //*******************************************************************
-//						dataCount
+//                        dataCount
 // recieves nothing
 // returns the total count of the linkedlist
 // returns an integer for the count
@@ -264,10 +257,10 @@ int linkedList<T>::dataCount() {
 
 
 //*******************************************************************
-//						emptyList
+//                        emptyList
 // receives nothing
 // empties the entire list
-// returns nothing 
+// returns nothing
 //********************************************************************
 template <typename T>
 void linkedList<T>::emptyList() {
@@ -275,7 +268,7 @@ void linkedList<T>::emptyList() {
 	linkNode<T>* next;
 	while (iter != NULL)
 	{
-		next = iter->next;
+		next = iter->getNext();
 		delete iter;
 		iter = next;
 	}
@@ -287,10 +280,10 @@ void linkedList<T>::emptyList() {
 
 
 //*******************************************************************
-//							displayData
-//	receives nothing
+//                            displayData
+//    receives nothing
 // displays all of the data within the linkedlist
-// returns nothing 
+// returns nothing
 //********************************************************************
 template <typename T>
 void linkedList<T>::displayData() {
@@ -304,20 +297,19 @@ void linkedList<T>::displayData() {
 	}
 
 	//if there is only one node:
-	if (iter->next == nullptr)
+	if (iter->getNext() == nullptr)
 	{
-		std::cout << iter->data << " ";
+		std::cout << iter->getData() << " ";
 	}
 
-	//else loop while print 
+	//else loop while print
 	else
 	{
 		while (iter != nullptr)
 		{
-			std::cout << iter->data << " ";
-			iter = iter->next;
+			std::cout << iter->getData() << " ";
+			iter = iter->getNext();
 		}
 	}
 	std::cout << std::endl;
 }
-

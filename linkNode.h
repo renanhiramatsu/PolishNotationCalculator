@@ -2,11 +2,32 @@
 
 template <typename T>
 class linkNode {
-public:										// TODO: SET TO PRIVATE AND FIX ERROS
+private:
 	T data;
-	linkNode* next = nullptr;
+	linkNode<T>* next = nullptr;
 public:
-	/*linkNode();
-	linkNode(T);*/
+	T getData();
+	linkNode<T>*  getNext();
+	void setData(T);
+	void setNext(linkNode<T>*);
 
 };
+template <typename T>
+T linkNode<T>::getData() {
+	return data;
+}
+
+template <typename T>
+linkNode<T>* linkNode<T>::getNext() {
+										// THROWING EXEPCTION of NULLPTR
+		return next;
+}
+template <typename T>
+void  linkNode<T> ::setData(T val) {
+	data = val;
+}
+
+template <typename T>
+void linkNode<T> ::setNext(linkNode<T>* pointer) {
+	next = pointer;
+}
