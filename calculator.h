@@ -44,11 +44,7 @@ std::string Calculator::inFixToPostfix(std::string str)
 	for (int i = 0; i < l; i++)
 	{
 		// If the char found is an operand, add it to tempStr
-		if (str[i] == ' ')
-		{
-			std::cout << "found space!" << std::endl;
-		}
-		if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= 0 && str[i] <= 9))
+		if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') || (str[i] >= 0 && str[i] <= 9) || (str[i] == ' '))
 			tempStr += str[i];
 
 		// If the char found is '(', push to stack

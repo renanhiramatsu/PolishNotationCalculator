@@ -15,10 +15,7 @@ int main(){
 	while (userInput != "q")
 	{
 	cout << "Enter a mathematical expression: ";
-	cin >> userInput;
-	cin.get();
-	cin.get();
-	//cin.get();
+	getline(cin, userInput);
 
 	cout << "Infix to postfix: " << endl;
 	cout << ob.inFixToPostfix(userInput) << endl;
