@@ -7,19 +7,30 @@ private:
 	std::string inFix, postFix;
 
 public:
-	Calculator() {};
+	Calculator() {};										// default constructor
 	//std::string inFixToPostfix(std::string str);
 	//std::string inFixToPrefix(std::string infix);
-	int checkPrecedence(char c);
-	bool isOperator(char c);
-	std::string infixToPostfix(std::string infix);
-	std::string infixToPrefix(std::string infix);
+	int checkPrecedence(char c);							 // determines PMMDAS precedence
+	bool isOperator(char c);								// determines if character is bool/char
+	std::string infixToPostfix(std::string infix);			// converts expression to postfix
+	std::string infixToPrefix(std::string infix);			 // converts expression to prefix
 
 
-	//double evalPostFix(std::string postfix);
+	/*double evalPostFix(std::string postfix);
+	double calculate(double n1, double n2, char op);*/
+
 
 };
 
+
+//******************************************************************
+//              int checkPrecendence(char)
+// pre: receives a character from the user input expression
+// pos: returns an integer either 3,2,1,-1 depending on the ranking for the
+//      operator
+// this program determines the precedence of the operator and returns an
+// integer which will used later when converting pre- and pos- fix
+//*******************************************************************
 int Calculator::checkPrecedence(char c)
 {
 	if (c == '%' || c == ' ') // PMMDAS is module higher than */? idk lol
@@ -30,14 +41,31 @@ int Calculator::checkPrecedence(char c)
 		return 1;
 	else
 		return 0;
+	
+	
 }
 
-bool Calculator::isOperator(char c){
+
+//******************************************************************
+//                   bool isOperator(char)
+// pre: receives a character from the user's expression
+// pos: returns either true or false
+// this function receives the character and checks whether it is an
+// operator or not. true = isoperator, false = digit/char
+//*******************************************************************
+bool Calculator::isOperator(char c) {
 	return (!isalpha(c) && !isdigit(c));
 }
 
 
 
+//******************************************************************
+//            std::string infixToPostFix(std::string)
+// pre: receives the user expression
+// pos: returns the expression converted into postfix
+// this function converts the user's expression into postfix and returns
+// it back to the main function
+//*******************************************************************
 std::string Calculator::infixToPostfix(std::string infix)
 {
 	infix = '(' + infix + ')';
@@ -75,14 +103,13 @@ std::string Calculator::infixToPostfix(std::string infix)
 
 		// Operator found 
 		else {
-
-			if (isOperator(char_stack.peek())) {
-				while (checkPrecedence(infix[i])
-					<= checkPrecedence(char_stack.peek())) {
+			if (isOperator(char_stack.peek()))
+			{
+				while (checkPrecedence(infix[i]) <= checkPrecedence(char_stack.peek()))
+				{
 					output += char_stack.peek();
 					char_stack.pop();
 				}
-
 				// Push current Operator on stack 
 				char_stack.push(infix[i]);
 			}
@@ -92,7 +119,13 @@ std::string Calculator::infixToPostfix(std::string infix)
 }
 
 
-
+//******************************************************************
+//          std::string inFixToPrefix(std::String)
+// pre: receives the user input expression
+// pos: returns the prefix notated expression
+// this function converts the user's expression into prefix notation
+// and returns it back to the main
+//*******************************************************************
 std::string Calculator::infixToPrefix(std::string infix)
 {
 	// stack for operators. 
@@ -107,7 +140,8 @@ std::string Calculator::infixToPrefix(std::string infix)
 		// opening bracket, then 
 		// push into the operators stack. 
 		if (infix[i] == '(') {
-			operators.push(infix[i]);
+			if(infix[i] != ' ')
+				operators.push(infix[i]);
 		}
 
 		// If current character is a 
@@ -164,7 +198,7 @@ std::string Calculator::infixToPrefix(std::string infix)
 
 				std::string op1 = operands.peek();
 				operands.pop();
-
+				
 				std::string op2 = operands.peek();
 				operands.pop();
 
@@ -202,10 +236,42 @@ std::string Calculator::infixToPrefix(std::string infix)
 	return operands.peek();
 }
 
-
-
-
-
+//
+//double Calculator::evalPostFix(std::string postfix) {
+//	int l = postfix.length();
+//	StackADT<int> intStack;
+//	//intStack.push('S');
+//	for (int i = 0; i < l; i++) {
+//		if (!isOperator(postfix[i]))
+//			intStack.push(postfix[i]);
+//		else {
+//			char op = postfix[i];
+//			double first = intStack.peek();
+//			std::cout <<"wagadoo: " << first << std::endl;
+//			intStack.pop();
+//			double second = intStack.peek();
+//			intStack.pop();
+//			double r = calculate(first, second, op);
+//		}
+//	}
+//	return intStack.peek();
+//}
+//
+//double Calculator::calculate(double n1, double n2, char op) {
+//	if (op == '+') {
+//		std::cout << "first: " << n1;
+//		std::cout <<"here: " << n1 + n2;
+//		return (n1 + n2);
+//	}
+//	else if (op == '-')
+//		return (n1 - n2);
+//	else if (op == '*')
+//		return (n1 * n2);
+//	else if (op == '/')
+//		return (n1 / n2);
+//	else if (op == '%')
+//		return (static_cast<int>(n1) % static_cast<int>(n2));
+//}
 
 // DELETE
 
