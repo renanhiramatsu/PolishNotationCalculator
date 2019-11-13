@@ -4,12 +4,27 @@
 
 //	TODO: EXCEPTION OF DIVIDING BY 0
 
+using namespace std;
+
+
+
+/*
+Infix to postfix conversion in C++
+Input Postfix expression must be in a desired format.
+Operands and operator, both must be single character.
+Only '+'  ,  '-'  , '*', '/' and '$' (for exponentiation)  operators are expected.
+*/
+#include<iostream>
+#include<string>
 
 using namespace std;
 
 
 
+
 int main() {
+
+
 	char input;
 	Calculator ob;
 	string userInput;
