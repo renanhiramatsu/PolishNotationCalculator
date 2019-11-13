@@ -1,8 +1,25 @@
+/*
+    Renan Silva Hiramatsu
+    Amber Low
+ this lab demonstrates the conversion of postfix and prefix notation
+ from a user input and evaluates the expression
+ 
+ do
+    ask user input expression
+    convert expression to postfix notation and evaluate
+    display
+    convert expression to prefix notation and evaluate
+    display
+    ask user if they want to continue
+ while(user wants to continue)
+ 
+ */
+
 #include <iostream>
 #include <string>
 #include "calculator.h"
 
-//	TODO: EXCEPTION OF DIVIDING BY 0
+//    TODO: EXCEPTION OF DIVIDING BY 0
 
 using namespace std;
 
@@ -18,52 +35,39 @@ Only '+'  ,  '-'  , '*', '/' and '$' (for exponentiation)  operators are expecte
 #include<string>
 
 using namespace std;
-
-
-
-
 int main() {
 
+    char input;
+    Calculator ob;
+    string userInput;
+    bool cont = true;
+    string postfix, prefix;
+    do
+    {
+        cout << "Enter a mathematical expression: ";
+        getline(cin, userInput);
 
-	Calculator ob;
+        cout << "Infix to postfix: " << endl;
+        postfix = ob.inFixToPostfix(userInput);
+        cout << postfix << endl;
+        cout << "Result: " << ob.evalPostFix(userInput) << endl;
 
-	cout << " Result: " << ob.infixToPostfix("10 + 1 * 10") << endl;
+        cout << "Infix to prefix: " << endl;
+        prefix = ob.inFixToPrefix(userInput);
+        cout << prefix << endl;
 
-	cout << " Result: " << ob.infixToPrefix("10+1*10") << endl;
+        
+        cout << "press 'q' to quit and 'c' to continue: ";
+        cin >> input;
+        cin.ignore();
 
+        if (tolower(input) == 'q')
+            cont = false;
 
+    } while (cont != false);
 
+    
 
-	//char input;
-	//Calculator ob;
-	//string userInput;
-	//bool cont = true;
-	//string postfix, prefix;
-	//do
-	//{
-	//	cout << "Enter a mathematical expression: ";
-	//	getline(cin, userInput);
-
-	//	cout << "Infix to postfix: " << endl;
-	//	postfix = ob.inFixToPostfix(userInput);
-	//	cout << postfix << endl;
-	////	cout << "Result: " << ob.evalPostFix(userInput) << endl;
-
-	//	cout << "Infix to prefix: " << endl;
-	//	cout << ob.inFixToPrefix(userInput) << endl;
-
-
-	//	cout << "press 'q' to quit and 'c' to continue: ";
-	//	cin >> input;
-	//	cin.ignore();
-
-	//	if (tolower(input) == 'q')
-	//		cont = false;
-
-	//} while (cont != false);
-
-
-
-	system("pause");
+    system("pause");
 
 }
