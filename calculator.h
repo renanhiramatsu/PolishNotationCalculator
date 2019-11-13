@@ -158,7 +158,7 @@ std::string Calculator::infixToPrefix(std::string infix)
 		// operators stack and pushing 
 		// result in operands stack. 
 		else {
-			while (!operators.isEmpty() &&
+			while (operators.isEmpty() &&
 				checkPrecedence(infix[i]) <=
 				checkPrecedence(operators.peek())) {
 
@@ -183,7 +183,7 @@ std::string Calculator::infixToPrefix(std::string infix)
 	// until it is empty and add result 
 	// of each pop operation in 
 	// operands stack. 
-	while (!operators.isEmpty()) {
+	while (operators.isEmpty()) {
 		std::string op1 = operands.peek();
 		operands.pop();
 
