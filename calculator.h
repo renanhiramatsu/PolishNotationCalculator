@@ -11,7 +11,7 @@ public:
 	int checkPrecedence(char c);
 	std::string inFixToPrefix(std::string infix);
 	bool isOperator(char c);
-
+	double evalPostFix(std::string postfix);
 
 };
 
@@ -33,7 +33,7 @@ bool Calculator::isOperator(char c)
 }
 
 
-std::string Calculator::inFixToPostfix(std::string str)
+std::string Calculator::inFixToPrefix(std::string str)
 {
 
 	StackADT<char> strOb;	// Creates the stack
@@ -93,7 +93,7 @@ std::string Calculator::inFixToPostfix(std::string str)
 	return tempStr;
 }
 
-std::string Calculator::inFixToPrefix(std::string infix)
+std::string Calculator::inFixToPostfix(std::string infix)
 {
 	/* Reverse String
 	 * Replace ( with ) and vice versa
@@ -117,10 +117,65 @@ std::string Calculator::inFixToPrefix(std::string infix)
 		}
 	}
 
-	std::string prefix = inFixToPostfix(infix);
+	std::string prefix = inFixToPrefix(infix);
 
 	// Reverse postfix 
 	reverse(prefix.begin(), prefix.end());
 
 	return prefix;
+}
+
+
+
+
+
+double Calculator::evalPostFix(std::string postfix) {
+	StackADT<int> intStack;
+	int l = postfix.length();
+	for (int i = 0; i < l; i++) {
+		if (!isOperator(postfix[i]))
+		{
+			intStack.push(postfix[i]);
+		}
+		else
+		{
+			int a, b;
+			if (isOperator(postfix[i]))
+			{
+				std::cout << static_cast<int>(intStack.peek());
+				a = intStack.peek();
+				intStack.pop();
+				std::cout << intStack.peek();
+
+				b = intStack.peek();
+				if (postfix[i] == '-')
+				{
+					intStack.push(a - b);
+				}
+				if (postfix[i] == '+')
+				{
+					intStack.push(a + b);
+				}
+				if (postfix[i] == '/')
+				{
+					if (a != 0 && b != 0)
+						intStack.push(a / b);
+					else {
+						std::cout << "divide by zero error! " << std::endl;
+						return NULL;
+					}
+				}
+				if (postfix[i] == '*')
+				{
+					intStack.push(a * b);
+				}
+				if (postfix[i] == '%')
+				{
+					intStack.push(a % b);
+				}
+
+			}
+		}
+	}
+	return intStack.peek();
 }
