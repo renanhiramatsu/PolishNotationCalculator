@@ -1,4 +1,5 @@
 #include "stackADT.h"
+#include "queueADT.h"
 
 
 class Calculator //: public StackADT<T>
@@ -14,16 +15,16 @@ public:
 	bool isOperator(char c);								// determines if character is bool/char
 	std::string infixToPostfix(std::string infix);			// converts expression to postfix
 	std::string infixToPrefix(std::string infix);			 // converts expression to prefix
-	int evalPostFix(std::string expression);
-	int postCalculation(char operation, int operand1, int operand2);
-	bool isNum(char C);
 
-	/*double evalPostFix(std::string postfix);
-	double calculate(double n1, double n2, char op);*/
+	double evalPostFix(std::string expression);
+	double postCalculation(char operation, double operand1, double operand2);
+	bool isNum(char C);
+	//double evalPreFix(std::string prefix);
+	double evaluatePrefix(std::string expression);
+
 
 
 };
-
 
 //******************************************************************
 //              int checkPrecendence(char)
@@ -43,8 +44,6 @@ int Calculator::checkPrecedence(char c)
 		return 1;
 	else
 		return 0;
-
-
 }
 
 
@@ -241,11 +240,18 @@ std::string Calculator::infixToPrefix(std::string infix)
 
 
 
-// Evaluates postfix expression
-int Calculator::evalPostFix(std::string expression)
+
+//******************************************************************
+//				 double evalPostFix(std::String)
+// pre: receives the user input expression in postfix notation
+// pos: returns a double value representing the result
+// This function takes in the expression and evaluates it. The result
+// is then returned back to the main
+//*******************************************************************
+double Calculator::evalPostFix(std::string expression)
 {
 	// StackADT from previous LAB
-	StackADT<int> S;
+	StackADT<double> S;
 
 	for (int i = 0; i < expression.length(); i++) {
 
@@ -254,9 +260,9 @@ int Calculator::evalPostFix(std::string expression)
 
 		// If character is operator, pop two elements from stack, perform operation and push the result back. 
 		else if (isOperator(expression[i])) {
-			int operand2 = S.peek(); S.pop();
-			int operand1 = S.peek(); S.pop();
-			int result = postCalculation(expression[i], operand1, operand2);
+			double operand2 = S.peek(); S.pop();
+			double operand1 = S.peek(); S.pop();
+			double result = postCalculation(expression[i], operand1, operand2);
 			S.push(result);
 		}
 		else if (isNum(expression[i])) {
@@ -274,8 +280,15 @@ int Calculator::evalPostFix(std::string expression)
 	return S.peek();	// Returns the result of postfix evaluation
 }
 
-// Function to perform an operation and return output. 
-int Calculator::postCalculation(char operation, int operand1, int operand2)
+
+//******************************************************************
+//         int postCalculation(char, int, int)
+// pre: recieves a char operation, and two integers for operands
+// pos: returns a double value
+// this function take in two operands along with the operator calculates 
+// the value. Returns that value back to be entered back to stack
+//*******************************************************************
+double Calculator::postCalculation(char operation, double operand1, double operand2)
 {
 	if (operation == '+') return operand1 + operand2;
 	else if (operation == '-') return operand1 - operand2;
@@ -286,6 +299,14 @@ int Calculator::postCalculation(char operation, int operand1, int operand2)
 	return -1;
 }
 
+
+//******************************************************************
+//						 bool isNum(char)
+// pre: receives a character from the expression
+// pos: returns either true or false
+// The function takes in a character and determines whether it is a
+// number or not.
+//*******************************************************************
 // Function to verify whether a character is numeric digit. 
 bool Calculator::isNum(char c)
 {
@@ -293,3 +314,109 @@ bool Calculator::isNum(char c)
 	return false;
 }
 
+
+
+//
+////******************************************************************
+////          double evalPreFix(std::String)
+//// pre: receives the user input expression in prefix notation
+//// pos: returns a double value  of the expression
+//// this function evaluates the prefix notated expression and returns the 
+//// result back into the main
+////*******************************************************************
+//double Calculator::evalPreFix(std::string prefix) {
+//	int l = prefix.length();
+//	ListQueue<int> intobj;
+//	StackADT<char> charObj;
+//	for (int i = l; i > 0; i--) {
+//		if (isOperator(prefix[i]))
+//			charObj.push(prefix[i]);
+//
+//	}
+//	return 0;
+////}
+
+double Calculator::evaluatePrefix(std::string expression){
+
+	StackADT<double> ob; // Stack object
+	for (int j = expression.size() - 1; j >= 0; j--) {
+
+
+
+		// Push operand to stack
+
+		// To convert expression[j] to digit subtract 
+
+		// '0' from expression[j]. 
+
+		if (isdigit(expression[j]))
+
+			ob.push(expression[j] - '0');
+
+
+
+		else {
+
+
+
+			// finds operator
+
+			// and pops from object
+
+			double exp1 = ob.peek();
+
+			ob.pop();
+
+			double exp2 = ob.peek();
+
+			ob.pop();
+
+
+
+			// Use switch case to operate on exp1 
+
+			// and exp2 and perform exp1 O exp2. 
+
+			switch (expression[j]) {
+
+			case '+':
+
+				ob.push(exp1 + exp2);
+
+				break;
+
+			case '-':
+
+				ob.push(exp1 - exp2);
+
+				break;
+
+			case '*':
+
+				ob.push(exp1 * exp2);
+
+				break;
+
+			case '/':
+
+				ob.push(exp1 / exp2);
+
+				break;
+
+			case '%':
+
+				// ob.push(exp1 % exp2);				TODO
+
+				break;
+
+			}
+
+		}
+
+	}
+
+
+
+	return ob.peek();		// Returns result of prefix expression
+
+}
