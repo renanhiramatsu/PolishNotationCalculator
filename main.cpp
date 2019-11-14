@@ -1,3 +1,99 @@
+#if 0
+
+double evaluatePrefix(string expression)
+
+{
+
+	StackADT<double> ob; // Stack object
+
+
+
+	for (int j = expression.size() - 1; j >= 0; j--) {
+
+
+
+		// Push operand to stack
+
+		// To convert expression[j] to digit subtract 
+
+		// '0' from expression[j]. 
+
+		if (isdigit(expression[j]))
+
+			ob.push(expression[j] - '0');
+
+
+
+		else {
+
+
+
+			// finds operator
+
+			// and pops from object
+
+			double exp1 = ob.peek();
+
+			ob.pop();
+
+			double exp2 = ob.peek();
+
+			ob.pop();
+
+
+
+			// Use switch case to operate on exp1 
+
+			// and exp2 and perform exp1 O exp2. 
+
+			switch (expression[j]) {
+
+			case '+':
+
+				ob.push(exp1 + exp2);
+
+				break;
+
+			case '-':
+
+				ob.push(exp1 - exp2);
+
+				break;
+
+			case '*':
+
+				ob.push(exp1 * exp2);
+
+				break;
+
+			case '/':
+
+				ob.push(exp1 / exp2);
+
+				break;
+
+			case '%':
+
+				// ob.push(exp1 % exp2);				TODO
+
+				break;
+
+			}
+
+		}
+
+	}
+
+
+
+	return ob.peek();		// Returns result of prefix expression
+
+}
+
+#endif
+
+
+
 /*
 	Renan Silva Hiramatsu
 	Amber Low
